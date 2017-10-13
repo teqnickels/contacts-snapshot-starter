@@ -8,7 +8,7 @@ const logErrors = (error, request, response, next) => {
 };
 
 const notFoundHandler = (request, response) => {
-  response.status(404).render('common/not_found', {name: 'Foobar'})
+  response.status(404).render('common/not_found')
 }
 
 const setDefaultResponseLocals = (request, response, next) => {
