@@ -4,7 +4,7 @@ const contacts = require('../../models/contacts');
 const middlewares = require('../middlewares');
 const bodyParser = require('body-parser')
 const session = require('express-session')
-
+const createUser = require('../../models/db/signup')
 
 router.get('/', (request, response, next) => {
   contacts.findAll()
@@ -17,6 +17,16 @@ router.use(bodyParser.urlencoded({ extended: true }))
 router.get('/signup', (request, response) => {
   response.render('auth/signup')
 })
+
+router.post('/signup', (request, response) => {
+  const email = request.body.email
+  const password = request.body.password
+
+  createUser(email, password)
+    .then(() => {
+        response.render('auth/login')
+      })
+    })
 
 router.use('/contacts', contactsRoutes);
 
