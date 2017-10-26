@@ -1,2 +1,12 @@
 <%- include ../partials/header.ejs %>
+  <div class="login">
+    <p>Don't have an account? 
+      <a href="signup">Sign Up</a></p>
+    <form action="/login" method="post">
+      <input type="text" name="email" placeholder="email"></input>
+      <input type="text" name="password" placeholder="password"></input>
+      <button type="submit" value="login">Submit</button>
+      <p>Enter the email and password that you signed up with</p>
+    </form>
+  </div>
 <%- include ../partials/footer.ejs %>

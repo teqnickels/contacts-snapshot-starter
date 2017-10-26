@@ -1,3 +1,4 @@
+
 const errorHandler = (error, request, response, next) => {
   response.status(500).send('Something bad happened. This page should be nicer looking');
 };
@@ -15,5 +16,7 @@ const setDefaultResponseLocals = (request, response, next) => {
   response.locals.query = ''
   next()
 }
+
+
 
 module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals };
