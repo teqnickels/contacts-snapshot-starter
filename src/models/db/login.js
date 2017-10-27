@@ -1,9 +1,9 @@
 const db = require('./db')
 
-const validatePassword = function(username, password) {
-  //need to get what user enters in login page
-  //search for that username in db
-  //check if the password matches the password in db
-  //if match, redirect to contacts page
-  //if no, redirect to login
+const findMatchingUser = function(email) {
+  return db.query(`SELECT email FROM auth WHERE email=$1`, [email])
+  pgp.end()
 }
+
+
+module.exports = findMatchingUser
