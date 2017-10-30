@@ -1,8 +1,13 @@
 <%- include ../partials/header.ejs %>
   <div class="login">
-    <p id="auth-warning-off">Invalid username or password entered</p>
-    <p class="user-exists-message"><%=message%></p>
-  
+    <p class="user-exists-message">
+      <%=message%>
+    </p>
+    <p class="auth-warning">
+      <%=warning%>
+    </p>
+    <br/>
+    <br/>
     <p>Don't have an account? <a href="signup">Sign Up</a></p>
     <form action="/login" method="post">
       <input type="text" name="email" placeholder="email"></input>

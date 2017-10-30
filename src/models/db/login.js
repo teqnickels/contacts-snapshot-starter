@@ -1,7 +1,8 @@
 const db = require('./db')
 
 const findMatchingUser = function(email) {
-  return db.query(`SELECT email FROM auth WHERE email=$1`, [email])
+  console.log("MADE IT TO DB")
+  return db.query(`SELECT email, password FROM auth WHERE email=$1`, [email])
   pgp.end()
 }
 
