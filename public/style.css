@@ -104,7 +104,7 @@ nav .search-form input {
     flex-direction: column;
 }
 
-#auth-warning {
+.auth-warning {
   display: inline;
   color: rgba(247, 68, 68, 0.926);
 }

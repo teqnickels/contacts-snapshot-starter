@@ -8,6 +8,8 @@ const createUser = require('../../models/db/signup')
 const bcrypt = require('bcrypt')
 const findMatchingUser = require('../../models/db/login')
 
+
+
 router.get('/', (request, response, next) => {
   contacts.findAll()
     .then((contacts) => {response.render('contacts/index', { contacts })})
@@ -28,14 +30,14 @@ router.post('/signup', (request, response) => {
       bcrypt.hash(password, salt, function(err, hash) {
       checkIfUserExists(email)
       .then((results) => {
-        console.log("userExists", results)
         if (!results) {
           createUser(email, hash)
             .then(() => {
               response.redirect('/login')
             })
         } else {
-          response.render('auth/login', { message: 'This user already exists. Login with your username and password' } )
+          response.send('Unable to sign up. User already exists. Hit the back button and create a new account or login.')
+          response.redirect('auth/login')
         }
       })
     })
@@ -45,7 +47,6 @@ router.post('/signup', (request, response) => {
 const checkIfUserExists = (email) => {
   return findMatchingUser(email)
     .then((results) => {
-      console.log("RESULTS!!!!!", results)
       if (results.length < 1) {
         return false
       } else {
@@ -63,42 +64,28 @@ const checkIfUserExists = (email) => {
 }
 
 router.get('/login', (request, response) => {
-  response.render('auth/login', { message:null })
+  response.render('auth/login', { message:null, warning:null  })
 })
 
 router.post('/login', (request, response) => {
   const email = request.body.email
   const loginAttempt = request.body.password
-  findMatchingUser(email, loginAttempt)
+  return findMatchingUser(email)
     .then((results) => {
-      console.log("RESULTS FROM DATABASE PROMISE", results)
-      if(results.length === 0) {
-        response.redirect('/login')
-      } else {
-       const match = validatePassword(loginAttempt, results)
-       console.log('MATCH RESULTS index.js 83 =====>', match)
-       if (!match) {
-         response.redirect('/login')
-       }
-       if(match) {
-         response.redirect('/')
-       } 
-      }
-    })
+      hash = results[0].password
+      bcrypt.compare(loginAttempt, hash, (err, res) => {
+        console.log(loginAttempt, hash)
+        if(res) {
+          response.redirect('/')
+        } else {
+          response.send('Wrong username or password. Click the back arrow to try again.')
+        }
+      }); 
+    }) 
 })
 
-const validatePassword = (loginAttempt, passwordFromDB) => {
-  console.log('LOGIN ATTEMPT & PASSWORD FROM DATABASE =====>', loginAttempt, passwordFromDB)
-
-  if(loginAttempt === passwordFromDB) {
-    return true
-  }else {
-    return false
-  }
-}
 
 router.use('/contacts', contactsRoutes);
-
 router.use(middlewares.logErrors);
 router.use(middlewares.errorHandler);
 router.use(middlewares.notFoundHandler)
