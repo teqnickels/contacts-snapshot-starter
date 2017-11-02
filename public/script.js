@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 });
 
-function showExistsMsg() {
-  console.log("MADE IT TO CHANGE ID!!!!!!!!!!!!!!!")
-  const userExists = document.getElementById('user-exists-off')
-  userExists.setAttribute("id", "user-exists-on")
-}
+// function showExistsMsg() {
+//   console.log("MADE IT TO CHANGE ID!!!!!!!!!!!!!!!")
+//   const userExists = document.getElementById('user-exists-off')
+//   userExists.setAttribute("id", "user-exists-on")
+// }
 
