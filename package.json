@@ -9,18 +9,27 @@
     "db:reset": "dropdb contacts_development && createdb contacts_development && npm run load_schema",
     "load_schema": "psql -d contacts_development < src/models/db/schema/schema.sql",
     "load_contacts": "psql -d contacts_development < test/seed/contacts.sql",
+    "load_first_admin": "psql -d contacts_development < test/seed/master-admin-user.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "debrena mcewen",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/teqnickels/contacts-snapshot-starter"
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.1",
+    "connect": "^3.6.5",
+    "connect-pg-simple": "^4.2.1",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.6",
     "method-override": "^2.3.10",
+    "morgan": "^1.9.0",
     "pg-promise": "^6.2.1"
   },
   "devDependencies": {

@@ -3,7 +3,6 @@ const contactsRoutes = require('./contacts')
 const contacts = require('../../models/contacts');
 const middlewares = require('../middlewares');
 const bodyParser = require('body-parser')
-const session = require('express-session')
 const createUser = require('../../models/db/signup')
 const bcrypt = require('bcrypt')
 const findMatchingUser = require('../../models/db/login')
@@ -16,16 +15,21 @@ router.get('/', (request, response, next) => {
     .catch( error => next(error) )
 })
 
+
 router.use(bodyParser.urlencoded({ extended: true }))
 
 router.get('/signup', (request, response) => {
+  console.log(request.session)
   response.render('auth/signup')
+
 })
+
 
 router.post('/signup', (request, response) => {
   const email = request.body.email
-  const password = request.body.password
+  const password = request.body.password  
   const saltRounds = 10
+
     bcrypt.genSalt(saltRounds, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash) {
       checkIfUserExists(email)
@@ -70,12 +74,17 @@ router.get('/login', (request, response) => {
 router.post('/login', (request, response) => {
   const email = request.body.email
   const loginAttempt = request.body.password
+
   return findMatchingUser(email)
     .then((results) => {
       hash = results[0].password
       bcrypt.compare(loginAttempt, hash, (err, res) => {
-        console.log(loginAttempt, hash)
         if(res) {
+          const sessionData = request.session;
+          console.log('The Session!!!!!',sessionData)
+          sessionData.email = email
+          sessionData.role = role
+          console.log('THE STUFF!!!!',sessionData.email, sessionData.role)
           response.redirect('/')
         } else {
           response.send('Wrong username or password. Click the back arrow to try again.')
@@ -84,11 +93,29 @@ router.post('/login', (request, response) => {
     }) 
 })
 
+//in the get
+router.get('/user-management', (request, response) => {
+  const sessionData = request.session;
+  if(sessionData.role === 'administrative') {
+    console.log(sessionData)
+    showAllUsers()
+      .then((results) => {
+        response.send(results)
+        // response.render('auth/user-management')
+      })
+  }else {
+    throw 'Admisitrative Access Only.'
+  }
+})
 
 router.use('/contacts', contactsRoutes);
 router.use(middlewares.logErrors);
 router.use(middlewares.errorHandler);
 router.use(middlewares.notFoundHandler)
 
-// router.use(session())
+//=============================NOTES===================================//
+// start off with an initial admin in a seed script and feed it to the db
+//
+//====================================================================//
+
 module.exports = router;

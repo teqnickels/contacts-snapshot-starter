@@ -10,13 +10,12 @@ const logErrors = (error, request, response, next) => {
 
 const notFoundHandler = (request, response) => {
   response.status(404).render('common/not_found')
-}
+};
 
 const setDefaultResponseLocals = (request, response, next) => {
   response.locals.query = ''
   next()
-}
-
+};
 
 
 module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals };
