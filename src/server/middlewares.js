@@ -17,5 +17,14 @@ const setDefaultResponseLocals = (request, response, next) => {
   next()
 };
 
+const restrictToLoggedInUsers = (request, response, next) => {
+  if (request.session.email) {
+    console.log('USER FOUND')
+    next();
+  } else {
+    // request.session.error = 'Access denied!';
+    response.redirect('/login');
+  }
+}
 
-module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals };
+module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals, restrictToLoggedInUsers };

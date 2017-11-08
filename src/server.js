@@ -11,15 +11,20 @@ const session = require('express-session')
 
 
 //CREATE AND USE SESSION
-app.use(session({
-  secret: 'yellow cat',
-  resave: false, 
-  saveUninitialized: true,
-  cookie: {
-    expires: 600000
-  }
-}))
+app.use(session({ //the only required option is 'secret' 
+  secret: 'session', //used to sign the session id cookie
+  resave : true, //forces the session to be saved in the session store whether there were changes made in the request or not
+  saveUninitialized: false //forces an uninitialized session to be saved in the session store. an uninitialized session is a new and not yet modified session
+}));
 
+//WE AREN'T USING THE SESSION-STORE SETTING
+//BY DEFAULT EXPRESS SAVES SESSION DATA IN THE SERVERS MEMORY, THIS IS ONLY SUITABLE FOR DEV
+//IN PRODUCTION, STORE SESSION INFO IN DB
+
+app.use((request, response, next) => {
+  console.log("This Is The Session", request.session)
+  next()
+})
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')
