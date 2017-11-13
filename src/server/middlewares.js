@@ -10,13 +10,25 @@ const logErrors = (error, request, response, next) => {
 
 const notFoundHandler = (request, response) => {
   response.status(404).render('common/not_found')
-}
+};
 
 const setDefaultResponseLocals = (request, response, next) => {
   response.locals.query = ''
+  if(request.session.email) {
+    response.locals.session = true
+  } else {
+    response.locals.session = false
+  }
   next()
+};
+
+const restrictToLoggedInUsers = (request, response, next) => {
+  if (request.session.email) {
+    next();
+  } else {
+    response.redirect('/login');
+  }
+
 }
 
-
-
-module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals };
+module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals, restrictToLoggedInUsers };
