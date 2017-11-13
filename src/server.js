@@ -22,8 +22,12 @@ app.use(session({ //the only required option is 'secret'
 //IN PRODUCTION, STORE SESSION INFO IN DB
 
 app.use((request, response, next) => {
-  console.log("This Is The Session", request.session)
-  next()
+  if(request.session) {
+    console.log("This Is The Session", request.session)
+    next()
+  } else {
+    console.log ("BISH! I SAID YOU AIN'T LOGGED IN!!!!!")
+  }
 })
 
 app.set('view engine', 'ejs');

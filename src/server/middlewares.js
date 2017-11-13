@@ -14,17 +14,21 @@ const notFoundHandler = (request, response) => {
 
 const setDefaultResponseLocals = (request, response, next) => {
   response.locals.query = ''
+  if(request.session.email) {
+    response.locals.session = true
+  } else {
+    response.locals.session = false
+  }
   next()
 };
 
 const restrictToLoggedInUsers = (request, response, next) => {
   if (request.session.email) {
-    console.log('USER FOUND')
     next();
   } else {
-    // request.session.error = 'Access denied!';
     response.redirect('/login');
   }
+
 }
 
 module.exports = { errorHandler, logErrors, notFoundHandler, setDefaultResponseLocals, restrictToLoggedInUsers };

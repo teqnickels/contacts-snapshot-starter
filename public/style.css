@@ -113,3 +113,8 @@ nav .search-form input {
   display: inline;
   color:rgba(58, 58, 211, 0.974);
 }
+
+.logout {
+  display:inline;
+  
+}

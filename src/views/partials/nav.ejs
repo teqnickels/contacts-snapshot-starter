@@ -5,4 +5,10 @@
     <input type="submit" style="display: none" />
   </form>
   <a href="/contacts/new">New Contact</a>
+  <%if (session) { %>
+    <form method="get" action="/logout" class="logout">
+      <button type="submit">Logout</button>
+    </form>
+  <% } %>
 </nav>
+

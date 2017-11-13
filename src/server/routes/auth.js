@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const contactsRoutes = require('./contacts')
-// const contacts = require('../../models/contacts');
+const contacts = require('../../models/contacts');
 const middlewares = require('../middlewares');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
@@ -8,9 +8,8 @@ const createUser = require('../../models/db/signup')
 const findMatchingUser = require('../../models/db/login')
 
 router.get('/signup', (request, response) => {
-  // console.log(request.session)
-  response.render('auth/signup')
-
+  let session = request.session
+  response.render('auth/signup', {session})
 })
 
 
@@ -66,25 +65,38 @@ router.post('/login', (request, response) => {
 
   return findMatchingUser(email)
     .then((results) => {
-      hash = results[0].password
-      let role = results[0].role
-      bcrypt.compare(loginAttempt, hash, (err, res) => {
-        if (res) {
-          request.session.email = email
-          request.session.role = role
-          console.log('THE SESSION!!!!', request.session.email, request.session.role)
-          response.redirect('/')
-        } else {
-          response.send('Wrong username or password. Click the back arrow to try again.')
-        }
-      });
+      if(results.length === 0 ) {
+        response.send('Wrong username or password. Click the back arrow to try again.')
+      }else {
+        hash = results[0].password
+        let role = results[0].role
+        bcrypt.compare(loginAttempt, hash, (err, res) => {
+          if (res) {
+            request.session.email = email
+            request.session.role = role
+            response.redirect('/')
+          } else {
+            response.send('Wrong username or password. Click the back arrow to try again.')
+          }
+        });
+      }
     })
 })
 
+router.get('/logout', (request, response) => {
+  let session = request.session
+  if(request.session.email) {
+    request.session.destroy( (err) => {
+      response.render('auth/login', {session})
+    })
+  } else {
+    response.send("You are not logged in.")
+  }
+})
 
-
-// router.use('/contacts', middlewares.restrictToLoggedInUsers, contactsRoutes);
-// router.use(middlewares.logErrors);
-// router.use(middlewares.errorHandler);
-// router.use(middlewares.notFoundHandler)
+router.use('/contacts', middlewares.restrictToLoggedInUsers, middlewares.setDefaultResponseLocals, contactsRoutes);
+router.use('/', middlewares.setDefaultResponseLocals)
+router.use(middlewares.logErrors);
+router.use(middlewares.errorHandler);
+router.use(middlewares.notFoundHandler)
 module.exports = router;
