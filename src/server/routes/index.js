@@ -10,12 +10,11 @@ const findMatchingUser = require('../../models/db/login')
 
 
 router.get('/', (request, response, next) => {
+  let role = request.session.role
   if(request.session.email) {
     contacts.findAll()
       .then((contacts) => { 
-        console.log('RESPONSE STUFF====>', response.locals) 
-        response.render('contacts/index', { contacts }) })
-
+        response.render('contacts/index', { contacts, role }) })
       .catch(error => next(error))
   } else {
     response.redirect('/login')

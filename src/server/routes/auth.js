@@ -83,11 +83,11 @@ router.post('/login', (request, response) => {
     })
 })
 
-router.get('/logout', (request, response) => {
+router.post('/logout', (request, response) => {
   let session = request.session
   if(request.session.email) {
     request.session.destroy( (err) => {
-      response.render('auth/login', {session})
+      response.redirect('/')
     })
   } else {
     response.send("You are not logged in.")
