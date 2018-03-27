@@ -1,5 +1,5 @@
 # Contacts Snapshot starter project
-![alt text](Users/debrenamcewen/Desktop/Screen%20Shot%202018-03-27%20at%203.42.45%20PM.png)
+![alt text](debrenamcewen/Desktop/Screen%20Shot%202018-03-27%20at%203.42.45%20PM.png)
 
 ## Folder Structure
 ```
