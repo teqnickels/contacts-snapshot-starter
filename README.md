@@ -1,5 +1,5 @@
 # Contacts Snapshot starter project
-![alt text](Desktop/Screen%20Shot%202018-03-27%20at%203.42.45%20PM.png)
+![Image of login page](https://github.com/teqnickels/contacts-snapshot-starter/blob/master/contacts-snapshot-starter.png)
 
 ## Folder Structure
 ```
