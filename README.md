@@ -1,3 +1,6 @@
+# Summary
+A learning project I completed while attending the Learner's Guild Development Bootcamp. The goal was to learn to build a full stack JavaScript application that relies on User Authentication. 
+
 # Contacts Snapshot starter project
 ![Image of login page](https://github.com/teqnickels/contacts-snapshot-starter/blob/master/contacts-snapshot-starter.png)
 
